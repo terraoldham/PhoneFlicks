@@ -67,11 +67,15 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView .dequeueReusableCell(withIdentifier: "FlicksCell", for: indexPath)
+        let cell = tableView .dequeueReusableCell(withIdentifier: "FlicksCell", for: indexPath) as! FlickCell
+        
         let flick = flicks![indexPath.row]
         let title = flick["title"] as! String
-        cell.textLabel?.text = title
-        print("row \(indexPath.row)")
+        let overview = flick["overview"] as! String
+        
+        cell.titleLabel.text = title
+        cell.overviewLabel.text = overview
+        
         return cell
     }
     
