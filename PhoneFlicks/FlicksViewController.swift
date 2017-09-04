@@ -16,7 +16,37 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
+        let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let request = URLRequest(url: now_playing_url!)
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            guard error == nil else {
+                print("error calling GET on /todos/1")
+                print(error)
+                return
+            }
+            
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
 
+            do {
+                guard let movieData = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                print(movieData)
+            } catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+
+        }
+        task.resume()
         // Do any additional setup after loading the view.
     }
 
