@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -72,9 +73,14 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         let flick = flicks![indexPath.row]
         let title = flick["title"] as! String
         let overview = flick["overview"] as! String
+        let posterPath = flick["poster_path"] as! String
+        
+        let baseUrl = "https://image.tmdb.org/t/p/w500"
+        let imageUrl = URL(string: baseUrl + posterPath)
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
+        cell.posterView.setImageWith(imageUrl)
         
         return cell
     }
