@@ -10,6 +10,8 @@ import UIKit
 
 class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
+    
+    var flicks: [NSDictionary]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +26,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         let task = session.dataTask(with: request) { (data, response, error) in
             
             guard error == nil else {
-                print("error calling GET on /todos/1")
-                print(error)
+                print("Error: Unable to call GET on /movies/now_playing/")
                 return
             }
             
@@ -35,13 +36,15 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             }
 
             do {
-                guard let movieData = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                    print("error trying to convert data to JSON")
+                guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("Error: Unable to convert data to JSON")
                     return
                 }
-                print(movieData)
+                print(responseDictionary)
+                self.flicks = responseDictionary["results"] as? [NSDictionary]
+                self.tableView.reloadData()
             } catch  {
-                print("error trying to convert data to JSON")
+                print("Error: Unable to convert data to JSON")
                 return
             }
 
@@ -56,12 +59,18 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        if let flicks = flicks {
+            return flicks.count
+        } else {
+            return 0
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView .dequeueReusableCell(withIdentifier: "FlicksCell", for: indexPath)
-        cell.textLabel?.text = "row \(indexPath.row)"
+        let flick = flicks![indexPath.row]
+        let title = flick["title"] as! String
+        cell.textLabel?.text = title
         print("row \(indexPath.row)")
         return cell
     }
