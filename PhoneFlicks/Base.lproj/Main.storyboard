@@ -53,7 +53,7 @@
                                             <outlet property="overviewLabel" destination="7lF-pk-gg2" id="wE9-Tq-rdD"/>
                                             <outlet property="posterView" destination="0Yb-XI-Ofa" id="9W1-BL-mXN"/>
                                             <outlet property="titleLabel" destination="yCw-vl-lhr" id="vfg-6Q-9ga"/>
-                                            <segue destination="zXb-Pc-Et0" kind="push" id="n0T-CR-4T9"/>
+                                            <segue destination="zXb-Pc-Et0" kind="push" identifier="ShowDetailSegue" id="EBS-Id-Fo4"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -73,7 +73,7 @@
         <!--Details View Controller-->
         <scene sceneID="gSI-xj-pdn">
             <objects>
-                <viewController id="zXb-Pc-Et0" customClass="DetailsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailsViewController" id="zXb-Pc-Et0" customClass="DetailsViewController" customModule="PhoneFlicks" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CSk-6M-rQD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -107,6 +107,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="KwJ-tu-UKw"/>
+                    <connections>
+                        <outlet property="overviewLabel" destination="IJC-rD-2vO" id="sv2-C8-ph5"/>
+                        <outlet property="posterView" destination="dFD-1R-hYv" id="oGm-gd-quQ"/>
+                        <outlet property="titleLabel" destination="an4-bb-Cce" id="MAh-lA-stl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ya4-Dw-B3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

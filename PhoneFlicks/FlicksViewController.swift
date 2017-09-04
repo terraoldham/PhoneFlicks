@@ -13,6 +13,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     var flicks: [NSDictionary]?
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +86,23 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    
+    let detailSegueIdentifier = "ShowDetailSegue"
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if  segue.identifier == detailSegueIdentifier,
+            let destination = segue.destination as? DetailsViewController,
+            let detailsIndex = tableView.indexPathForSelectedRow?.row
+        {
+            let detailFlick = flicks![detailsIndex]
+            let flickOverview = detailFlick["overview"] as! String
+            let flickTitle = detailFlick["title"] as! String
+            let flickPosterImage = detailFlick["poster_path"] as! String
+            destination.flickOverview = flickOverview
+            destination.flickTitle = flickTitle
+            destination.flickPosterImage = flickPosterImage
+        }
+    }
     /*
     // MARK: - Navigation
 
