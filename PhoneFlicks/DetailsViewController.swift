@@ -13,6 +13,8 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var posterView: UIImageView!
+    @IBOutlet var detailView: UIView!
+    @IBOutlet weak var detailTextView: UIView!
     
     var flickTitle: String!
     var flickOverview: String!
@@ -26,6 +28,12 @@ class DetailsViewController: UIViewController {
         let baseUrl = "https://image.tmdb.org/t/p/w500"
         let imageUrl = URL(string: baseUrl + flickPosterImage)
         posterView.setImageWith(imageUrl)
+        detailTextView.center.y  += view.bounds.height
+        UIView.animate(withDuration: 0.7, delay: 1.0, options: .curveEaseOut, animations: {
+            self.detailTextView.center.y -= self.view.bounds.height
+        }, completion: { finished in
+            print("Animation success")
+        })
         
 
         // Do any additional setup after loading the view.
