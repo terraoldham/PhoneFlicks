@@ -11,6 +11,7 @@ import AFNetworking
 
 class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var flicks: [NSDictionary]?
     let defaults = UserDefaults.standard
@@ -20,6 +21,10 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        let contentWidth = scrollView.bounds.width
+        let contentHeight = scrollView.bounds.height * 3
+        scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
         
         let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
         let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
