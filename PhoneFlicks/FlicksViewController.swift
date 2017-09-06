@@ -20,6 +20,11 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getFlicksData()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -27,6 +32,10 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         let contentWidth = scrollView.bounds.width
         let contentHeight = scrollView.bounds.height * 3
         scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
+
+    }
+    
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
         let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
         let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -46,7 +55,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
                 print("Error: did not receive data")
                 return
             }
-
+            
             do {
                 guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
                     print("Error: Unable to convert data to JSON")
@@ -59,14 +68,54 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
                 print("Error: Unable to convert data to JSON")
                 return
             }
+            self.tableView.reloadData()
             MBProgressHUD.hide(for: self.view, animated: true)
-
+            refreshControl.endRefreshing()
+            
         }
         task.resume()
-        // Do any additional setup after loading the view.
     }
     
-    
+    func getFlicksData() {
+        
+
+            let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
+            let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+            let top_rated_url = URL(string:"https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")
+            let request = URLRequest(url: now_playing_url!)
+            let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
+            let task = session.dataTask(with: request) { (data, response, error) in
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+                guard error == nil else {
+                    print("Error: Unable to call GET on /movies/now_playing/")
+                    self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
+                    self.networkErrorView.isHidden = false
+                    return
+                }
+                
+                guard let responseData = data else {
+                    print("Error: did not receive data")
+                    return
+                }
+                
+                do {
+                    guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                        print("Error: Unable to convert data to JSON")
+                        return
+                    }
+                    print(responseDictionary)
+                    self.flicks = responseDictionary["results"] as? [NSDictionary]
+                    self.tableView.reloadData()
+                } catch  {
+                    print("Error: Unable to convert data to JSON")
+                    return
+                }
+                MBProgressHUD.hide(for: self.view, animated: true)
+                
+            }
+            task.resume()
+
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
