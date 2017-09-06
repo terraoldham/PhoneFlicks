@@ -77,8 +77,6 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func getFlicksData() {
-        
-
             let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
             let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
             let top_rated_url = URL(string:"https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")
@@ -160,19 +158,13 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             let flickOverview = detailFlick["overview"] as! String
             let flickTitle = detailFlick["title"] as! String
             let flickPosterImage = detailFlick["poster_path"] as! String
+            let flickReleaseDate = detailFlick["release_date"] as! String
+            let flickRating = detailFlick["vote_average"] as! Float
             destination.flickOverview = flickOverview
             destination.flickTitle = flickTitle
             destination.flickPosterImage = flickPosterImage
+            destination.flickReleaseDate = flickReleaseDate
+            destination.flickRating = flickRating
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
