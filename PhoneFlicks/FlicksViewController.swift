@@ -13,6 +13,7 @@ import MBProgressHUD
 class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var networkErrorView: UIView!
     
     var flicks: [NSDictionary]?
     let defaults = UserDefaults.standard
@@ -36,6 +37,8 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             
             guard error == nil else {
                 print("Error: Unable to call GET on /movies/now_playing/")
+                self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
+                self.networkErrorView.isHidden = false
                 return
             }
             
