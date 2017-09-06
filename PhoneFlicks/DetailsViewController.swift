@@ -28,8 +28,9 @@ class DetailsViewController: UIViewController {
         let baseUrl = "https://image.tmdb.org/t/p/w500"
         let imageUrl = URL(string: baseUrl + flickPosterImage)
         posterView.setImageWith(imageUrl)
-        titleLabel.sizeToFit()
         overviewLabel.sizeToFit()
+        titleLabel.bounds.size.width = overviewLabel.bounds.size.width
+        titleLabel.center.x = overviewLabel.center.x
         
         let titleHeight = titleLabel.bounds.size.height
         let overviewHeight = overviewLabel.bounds.size.height
