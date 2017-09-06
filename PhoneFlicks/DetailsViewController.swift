@@ -28,9 +28,23 @@ class DetailsViewController: UIViewController {
         let baseUrl = "https://image.tmdb.org/t/p/w500"
         let imageUrl = URL(string: baseUrl + flickPosterImage)
         posterView.setImageWith(imageUrl)
+        titleLabel.sizeToFit()
+        overviewLabel.sizeToFit()
+        
+        let titleHeight = titleLabel.bounds.size.height
+        let overviewHeight = overviewLabel.bounds.size.height
+        let totalHeight = titleHeight + overviewHeight + 25.0
+        let diffHeight = detailTextView.bounds.size.height - totalHeight
+        
+        print(titleHeight)
+        print(overviewHeight)
+        print(totalHeight)
+        print(diffHeight)
+        print(detailTextView.bounds.height)
+        
         detailTextView.center.y  += view.bounds.height
         UIView.animate(withDuration: 0.7, delay: 1.0, options: .curveEaseOut, animations: {
-            self.detailTextView.center.y -= self.view.bounds.height
+            self.detailTextView.center.y -= (self.view.bounds.height - diffHeight)
         }, completion: { finished in
             print("Animation success")
         })

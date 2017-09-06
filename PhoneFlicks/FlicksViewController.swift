@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -28,6 +29,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         
         let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
         let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let top_rated_url = URL(string:"https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")
         let request = URLRequest(url: now_playing_url!)
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
@@ -59,6 +61,8 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         task.resume()
         // Do any additional setup after loading the view.
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -72,7 +76,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             return 0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView .dequeueReusableCell(withIdentifier: "FlicksCell", for: indexPath) as! FlickCell
         
