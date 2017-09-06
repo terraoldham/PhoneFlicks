@@ -34,7 +34,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         let request = URLRequest(url: now_playing_url!)
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
-            
+            MBProgressHUD.showAdded(to: self.view, animated: true)
             guard error == nil else {
                 print("Error: Unable to call GET on /movies/now_playing/")
                 self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
@@ -59,6 +59,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
                 print("Error: Unable to convert data to JSON")
                 return
             }
+            MBProgressHUD.hide(for: self.view, animated: true)
 
         }
         task.resume()
