@@ -50,7 +50,7 @@ class DetailsViewController: UIViewController {
         
         let titleHeight = titleView.bounds.size.height
         let overviewHeight = overviewLabel.bounds.size.height
-        let totalHeight = titleHeight + overviewHeight + 25.0
+        let totalHeight = titleHeight + overviewHeight + 70.0
         let diffHeight = detailTextView.bounds.size.height - totalHeight
         
         detailTextView.center.y  += view.bounds.height
