@@ -14,8 +14,11 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var networkErrorView: UIView!
+
     
     var flicks: [NSDictionary]?
+    var endpoint: String!
+    
     let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -38,9 +41,10 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
         let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
-        let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-        let top_rated_url = URL(string:"https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")
-        let request = URLRequest(url: now_playing_url!)
+        let api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
+        print(api_string)
+        let api_endpoint = URL(string: api_string)!
+        let request = URLRequest(url: api_endpoint)
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
         let task = session.dataTask(with: request) { (data, response, error) in
             MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -78,9 +82,10 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     
     func getFlicksData() {
             let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
-            let now_playing_url = URL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-            let top_rated_url = URL(string:"https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")
-            let request = URLRequest(url: now_playing_url!)
+            let api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
+            print(api_string)
+            let api_endpoint = URL(string: api_string)!
+            let request = URLRequest(url: api_endpoint)
             let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
             let task = session.dataTask(with: request) { (data, response, error) in
                 MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -130,6 +135,9 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView .dequeueReusableCell(withIdentifier: "FlicksCell", for: indexPath) as! FlickCell
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.darkGray
+        cell.selectedBackgroundView = backgroundView
         
         let flick = flicks![indexPath.row]
         let title = flick["title"] as! String
@@ -155,16 +163,8 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             let detailsIndex = tableView.indexPathForSelectedRow?.row
         {
             let detailFlick = flicks![detailsIndex]
-            let flickOverview = detailFlick["overview"] as! String
-            let flickTitle = detailFlick["title"] as! String
-            let flickPosterImage = detailFlick["poster_path"] as! String
-            let flickReleaseDate = detailFlick["release_date"] as! String
-            let flickRating = detailFlick["vote_average"] as! Float
-            destination.flickOverview = flickOverview
-            destination.flickTitle = flickTitle
-            destination.flickPosterImage = flickPosterImage
-            destination.flickReleaseDate = flickReleaseDate
-            destination.flickRating = flickRating
+            destination.flick = detailFlick
+
         }
     }
 }

@@ -21,40 +21,37 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var ratingImageView: UIImageView!
     @IBOutlet weak var calendarImageView: UIImageView!
     
-    var flickTitle: String!
-    var flickOverview: String!
-    var flickPosterImage: String!
-    var flickReleaseDate: String!
-    var flickRating: Float!
+    var flick: NSDictionary!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = flickTitle
-        overviewLabel.text = flickOverview
-        ratingLabel.text = flickReleaseDate
+        let flickOverview = flick["overview"] as! String
+        let flickTitle = flick["title"] as! String
+        let flickPosterImage = flick["poster_path"] as! String
+        let flickReleaseDate = flick["release_date"] as! String
+        let flickRating = flick["vote_average"] as! Float
         let stringRating = String(format: "%.01f", flickRating)
-        releaseDateLabel.text = stringRating
-        
         let baseUrl = "https://image.tmdb.org/t/p/w500"
         let imageUrl = URL(string: baseUrl + flickPosterImage)
+        
+        titleLabel.text = flickTitle
+        overviewLabel.text = flickOverview
+        releaseDateLabel.text = flickReleaseDate
+        ratingLabel.text = stringRating
         posterView.setImageWith(imageUrl)
         
         
         overviewLabel.sizeToFit()
         titleLabel.bounds.size.width = overviewLabel.bounds.size.width
         titleView.center.x = overviewLabel.center.x
-        ratingLabel.bounds.size.width = overviewLabel
-            .bounds.size.width / 2
-        releaseDateLabel.bounds.size.width = overviewLabel.bounds.size.width / 2
+        ratingLabel.bounds.size.width = overviewLabel.bounds.size.width
+        releaseDateLabel.bounds.size.width = overviewLabel.bounds.size.width
         
         
         let titleHeight = titleView.bounds.size.height
         let overviewHeight = overviewLabel.bounds.size.height
         let totalHeight = titleHeight + overviewHeight + 25.0
         let diffHeight = detailTextView.bounds.size.height - totalHeight
-        let fourthWidth = titleLabel.bounds.size.width / 4
-        ratingLabel.center.x = titleLabel.center.x + fourthWidth
-        releaseDateLabel.center.x = titleLabel.center.x - fourthWidth
         
         detailTextView.center.y  += view.bounds.height
         UIView.animate(withDuration: 0.7, delay: 1.0, options: .curveEaseOut, animations: {

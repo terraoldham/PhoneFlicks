@@ -83,7 +83,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="PhoneFlicks" id="WPx-Os-XuJ"/>
+                    <navigationItem key="navigationItem" title="PhoneFlicks" id="WPx-Os-XuJ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="WLL-yB-vEY"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="networkErrorView" destination="wZG-Y2-ihd" id="IBt-UF-FUf"/>
                         <outlet property="scrollView" destination="lny-vV-Wl9" id="NSF-xd-7L7"/>
@@ -107,19 +109,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" misplaced="YES" id="Ci3-8N-Cn7">
-                                <rect key="frame" x="16" y="331" width="343" height="336"/>
+                                <rect key="frame" x="16" y="301" width="343" height="366"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IJC-rD-2vO">
-                                        <rect key="frame" x="23" y="68" width="296" height="109"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Futura-CondensedMedium" family="Futura" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" misplaced="YES" id="a6o-gY-2jw">
-                                        <rect key="frame" x="23" y="8" width="296" height="63"/>
+                                        <rect key="frame" x="23" y="5" width="296" height="89"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="an4-bb-Cce">
@@ -131,7 +125,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IPf-Qk-QnW">
-                                                <rect key="frame" x="0.0" y="29" width="146" height="34"/>
+                                                <rect key="frame" x="0.0" y="29" width="296" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.9370916485786438" green="0.93694382905960083" blue="0.95754462480545044" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="Futura-CondensedMedium" family="Futura" pointSize="13"/>
@@ -139,24 +133,32 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vXQ-aU-r5H">
-                                                <rect key="frame" x="145" y="29" width="151" height="34"/>
+                                                <rect key="frame" x="0.0" y="60" width="296" height="39"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.9370916485786438" green="0.93694382905960083" blue="0.95754462480545044" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="Futura-CondensedMedium" family="Futura" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ThumbsUp.png" id="mFC-FN-A1W">
-                                                <rect key="frame" x="33" y="34" width="23" height="23"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Calendar.png" id="dVe-wj-ifl">
+                                                <rect key="frame" x="89" y="70" width="23" height="23"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Calendar.png" id="dVe-wj-ifl">
-                                                <rect key="frame" x="170" y="35" width="23" height="23"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ThumbsUp.png" id="mFC-FN-A1W">
+                                                <rect key="frame" x="89" y="35" width="23" height="23"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IJC-rD-2vO">
+                                        <rect key="frame" x="23" y="102" width="296" height="109"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Futura-CondensedMedium" family="Futura" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -179,12 +181,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ya4-Dw-B3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1380" y="139"/>
+            <point key="canvasLocation" x="1379.5" y="138.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vy9-mC-vyB">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gup-EV-Oh2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="FlicksNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Gup-EV-Oh2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Y9q-Bf-hpb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
