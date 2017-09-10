@@ -22,8 +22,8 @@ The following **required** functionality is completed:
   - [ ] Implement segmented control to switch between list view and grid
     view.
     - [ ] Add a search bar.
-    - [ ] All images fade in.
-    - [ ] For the large poster, load the low-res image first, switch to
+    - [X] All images fade in.
+    - [X] For the large poster, load the low-res image first, switch to
       high-res when complete.
       - [X] Customize the highlight and selection effect of the cell.
       - [X] Customize the navigation bar.

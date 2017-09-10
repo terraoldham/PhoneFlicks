@@ -145,13 +145,15 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         let overview = flick["overview"] as! String
         let posterPath = flick["poster_path"] as! String
         
-        let baseUrl = "https://image.tmdb.org/t/p/w500"
-        let imageUrl = URL(string: baseUrl + posterPath)
+        let smallBaseUrl = "https://image.tmdb.org/t/p/w500"
+        let largeBaseUrl = "https://image.tmdb.org/t/p/w1000"
+        let imageUrl = URL(string: smallBaseUrl + posterPath)
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
         cell.posterView.setImageWith(imageUrl)
-        let imageRequest = NSURLRequest(url: NSURL(string: baseUrl + posterPath)! as URL)
+        let imageRequest = NSURLRequest(url: NSURL(string: smallBaseUrl + posterPath)! as URL)
+        let largeImageRequest = NSURLRequest(url: NSURL(string: largeBaseUrl + posterPath)! as URL)
         cell.posterView.setImageWith(imageRequest as URLRequest!, placeholderImage: nil, success: { (imageRequest, imageResponse, image) in
             if imageResponse != nil {
                 print("Image was NOT cached, fade in image")
@@ -159,6 +161,18 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
                 cell.posterView.image = image
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     cell.posterView.alpha = 1.0
+                    cell.posterView.setImageWith(
+                        largeImageRequest as URLRequest!,
+                        placeholderImage: image,
+                        success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                            
+                            cell.posterView.image = largeImage;
+                            
+                    },
+                        failure: { (request, response, error) -> Void in
+                            // do something for the failure condition of the large image request
+                            // possibly setting the ImageView's image to a default image
+                    })
                 })
             } else {
                 print("Image was cached so just update the image")
