@@ -37,7 +37,7 @@ The following **required** functionality is completed:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://imgur.com/c3RXgSH' title='Video
+<img src='https://media.giphy.com/media/26vIdGUAFa2OF349a/giphy.gif' title='Video
 Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
