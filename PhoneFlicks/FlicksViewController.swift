@@ -15,10 +15,12 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var networkErrorView: UIView!
 
+
     
     var flicks: [NSDictionary]?
     var endpoint: String!
-    
+    var searchActive: Bool = false
+    var filtered:[String] = []
     let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -83,7 +85,6 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     func getFlicksData() {
             let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
             let api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
-            print(api_string)
             let api_endpoint = URL(string: api_string)!
             let request = URLRequest(url: api_endpoint)
             let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
@@ -150,6 +151,22 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
         cell.posterView.setImageWith(imageUrl)
+        let imageRequest = NSURLRequest(url: NSURL(string: baseUrl + posterPath)! as URL)
+        cell.posterView.setImageWith(imageRequest as URLRequest!, placeholderImage: nil, success: { (imageRequest, imageResponse, image) in
+            if imageResponse != nil {
+                print("Image was NOT cached, fade in image")
+                cell.posterView.alpha = 0.0
+                cell.posterView.image = image
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                    cell.posterView.alpha = 1.0
+                })
+            } else {
+                print("Image was cached so just update the image")
+                cell.posterView.image = image
+            }
+        }) { (imageRequest, imageResponse, error) in
+            print("There was a problem loading this")
+        }
         
         return cell
     }
