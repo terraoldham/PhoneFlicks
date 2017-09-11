@@ -76,12 +76,10 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
                 self.networkErrorView.isHidden = false
                 return
             }
-            
             guard let responseData = data else {
                 print("Error: did not receive data")
                 return
             }
-            
             do {
                 guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options:[]) as? [String: AnyObject] else {
                     print("Error: Unable to convert data to JSON")
