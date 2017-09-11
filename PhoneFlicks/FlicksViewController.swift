@@ -41,45 +41,9 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
-        
-        let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
-        let api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
-        print(api_string)
-        let api_endpoint = URL(string: api_string)!
-        let request = URLRequest(url: api_endpoint)
-        let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
-        let task = session.dataTask(with: request) { (data, response, error) in
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-            guard error == nil else {
-                print("Error: Unable to call GET on /movies/now_playing/")
-                self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
-                self.networkErrorView.isHidden = false
-                return
-            }
-            
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            
-            do {
-                guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                    print("Error: Unable to convert data to JSON")
-                    return
-                }
-                print(responseDictionary)
-                self.flicks = responseDictionary["results"] as? [NSDictionary]
-                self.tableView.reloadData()
-            } catch  {
-                print("Error: Unable to convert data to JSON")
-                return
-            }
+            getFlicksData()
             self.tableView.reloadData()
-            MBProgressHUD.hide(for: self.view, animated: true)
             refreshControl.endRefreshing()
-            
-        }
-        task.resume()
     }
     
     func getFlicksData() {
