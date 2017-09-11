@@ -38,8 +38,8 @@ The following **required** functionality is completed:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://media.giphy.com/media/26vIdGUAFa2OF349a/giphy.gif' title='Video
-Walkthrough' width='' alt='Video Walkthrough' />
+![alt
+text](https://github.com/terraoldham/PhoneFlicks/blob/7251779e1120dee1a913d06e889a96e3f6da483f/PhoneFlicksFinal.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
