@@ -21,7 +21,7 @@ The following **required** functionality is completed:
   - [X] Add a tab bar for **Now Playing** and **Top Rated** movies.
   - [ ] Implement segmented control to switch between list view and grid
     view.
-    - [ ] Add a search bar.
+    - [X] Add a search bar.
     - [X] All images fade in.
     - [X] For the large poster, load the low-res image first, switch to
       high-res when complete.
@@ -32,6 +32,7 @@ The following **required** functionality is completed:
 
       - [X] Added UI animations on the details page
       - [X] Included rating and release date in the detail view
+      - [X] Show placeholder images if there is a problem loading them
 
 ## Video Walkthrough
 

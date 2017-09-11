@@ -10,10 +10,11 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class FlicksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var networkErrorView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
 
 
     
@@ -33,11 +34,22 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
         
         let contentWidth = scrollView.bounds.width
         let contentHeight = scrollView.bounds.height * 3
         scrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
 
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = true
+        getFlicksData()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchActive = true
+        getFlicksData()
     }
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
@@ -47,41 +59,46 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func getFlicksData() {
-            let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
-            let api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
-            let api_endpoint = URL(string: api_string)!
-            let request = URLRequest(url: api_endpoint)
-            let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil, delegateQueue: OperationQueue.main)
-            let task = session.dataTask(with: request) { (data, response, error) in
-                MBProgressHUD.showAdded(to: self.view, animated: true)
-                guard error == nil else {
-                    print("Error: Unable to call GET on /movies/now_playing/")
-                    self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
-                    self.networkErrorView.isHidden = false
-                    return
-                }
-                
-                guard let responseData = data else {
-                    print("Error: did not receive data")
-                    return
-                }
-                
-                do {
-                    guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                        print("Error: Unable to convert data to JSON")
-                        return
-                    }
-                    print(responseDictionary)
-                    self.flicks = responseDictionary["results"] as? [NSDictionary]
-                    self.tableView.reloadData()
-                } catch  {
+        let apiKey = "07a863aca7cc2d734ba6d085a5ec3006"
+        var api_string = "https://api.themoviedb.org/3/movie/" + endpoint + "?api_key=\(apiKey)"
+        if searchActive {
+            let search_term = searchBar.text!
+            api_string = "https://api.themoviedb.org/3/search/movie?api_key=\(apiKey)&query=" + search_term
+        }
+        let api_endpoint = URL(string: api_string)!
+        let request = URLRequest(url: api_endpoint)
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate:nil,delegateQueue: OperationQueue.main)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+            guard error == nil else {
+                print("Error: Unable to call GET on /movies/now_playing/")
+                self.networkErrorView.superview?.bringSubview(toFront: self.networkErrorView)
+                self.networkErrorView.isHidden = false
+                return
+            }
+            
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            do {
+                guard let responseDictionary = try JSONSerialization.jsonObject(with: responseData, options:[]) as? [String: AnyObject] else {
                     print("Error: Unable to convert data to JSON")
                     return
                 }
-                MBProgressHUD.hide(for: self.view, animated: true)
-                
+                print(responseDictionary)
+                self.flicks = responseDictionary["results"] as? [NSDictionary]
+                self.tableView.reloadData()
+            } catch  {
+                print("Error: Unable to convert data to JSON")
+                return
             }
-            task.resume()
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+        }
+        searchActive = false
+        task.resume()
 
     }
 
@@ -118,6 +135,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         cell.posterView.setImageWith(imageUrl)
         let imageRequest = NSURLRequest(url: NSURL(string: smallBaseUrl + posterPath)! as URL)
         let largeImageRequest = NSURLRequest(url: NSURL(string: largeBaseUrl + posterPath)! as URL)
+        print(smallBaseUrl + posterPath)
         cell.posterView.setImageWith(imageRequest as URLRequest!, placeholderImage: nil, success: { (imageRequest, imageResponse, image) in
             if imageResponse != nil {
                 print("Image was NOT cached, fade in image")
@@ -144,6 +162,7 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }) { (imageRequest, imageResponse, error) in
             print("There was a problem loading this")
+            cell.posterView.image = UIImage(named: "Placeholder")
         }
         
         return cell
