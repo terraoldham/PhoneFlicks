@@ -15,6 +15,8 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var networkErrorView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
 
 
     
@@ -166,17 +168,95 @@ class FlicksViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfRowsInSection section: Int) -> Int {
+        if let flicks = flicks {
+            return flicks.count
+        } else {
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView .dequeueReusableCell(withReuseIdentifier: "CollectionsCell", for: indexPath) as! CollectionCell
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.darkGray
+        cell.selectedBackgroundView = backgroundView
+        
+        let flick = flicks![indexPath.row]
+        let title = flick["title"] as! String
+        let posterPath = flick["poster_path"] as! String
+        
+        let smallBaseUrl = "https://image.tmdb.org/t/p/w500"
+        let largeBaseUrl = "https://image.tmdb.org/t/p/w1000"
+        let imageUrl = URL(string: smallBaseUrl + posterPath)
+        
+        cell.titleLabel.text = title
+        cell.posterView.setImageWith(imageUrl)
+        let imageRequest = NSURLRequest(url: NSURL(string: smallBaseUrl + posterPath)! as URL)
+        let largeImageRequest = NSURLRequest(url: NSURL(string: largeBaseUrl + posterPath)! as URL)
+        print(smallBaseUrl + posterPath)
+        cell.posterView.setImageWith(imageRequest as URLRequest!, placeholderImage: nil, success: { (imageRequest, imageResponse, image) in
+            if imageResponse != nil {
+                print("Image was NOT cached, fade in image")
+                cell.posterView.alpha = 0.0
+                cell.posterView.image = image
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                    cell.posterView.alpha = 1.0
+                    cell.posterView.setImageWith(
+                        largeImageRequest as URLRequest!,
+                        placeholderImage: image,
+                        success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                            
+                            cell.posterView.image = largeImage;
+                            
+                    },
+                        failure: { (request, response, error) -> Void in
+                            // do something for the failure condition of the large image request
+                            // possibly setting the ImageView's image to a default image
+                    })
+                })
+            } else {
+                print("Image was cached so just update the image")
+                cell.posterView.image = image
+            }
+        }) { (imageRequest, imageResponse, error) in
+            print("There was a problem loading this")
+            cell.posterView.image = UIImage(named: "Placeholder")
+        }
+        
+        return cell
+    }
+
     
     let detailSegueIdentifier = "ShowDetailSegue"
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if  segue.identifier == detailSegueIdentifier,
-            let destination = segue.destination as? DetailsViewController,
-            let detailsIndex = tableView.indexPathForSelectedRow?.row
-        {
-            let detailFlick = flicks![detailsIndex]
-            destination.flick = detailFlick
-
+        var indexPath: IndexPath?
+        var flick: NSDictionary?
+        if segmentedControl.selectedSegmentIndex == 0 {
+            let cell = sender as! UITableViewCell
+            indexPath = tableView.indexPath(for: cell)
+            flick = flicks![indexPath!.row]
+        } else {
+            let cell = sender as! UICollectionViewCell
+            indexPath = collectionView.indexPath(for: cell)
+            flick = flicks![indexPath!.row]
+        }
+        let detailsViewController = segue.destination as! DetailsViewController
+        detailsViewController.flick = flick
+        
+    }
+    
+    @IBAction func moviePreviewType(_ sender: Any) {
+        if (segmentedControl.selectedSegmentIndex == 0){
+            print("List")
+            collectionView.isHidden = true
+            tableView.isHidden = false
+        } else {
+            print("Collection")
+            tableView.isHidden = true
+            collectionView.isHidden = false
         }
     }
 }
+
